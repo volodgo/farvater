@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, toRaw } from "vue"
-import { Stage, StageEvent } from "./lib/Stage"
-import type { IFigure } from './lib/figures/Figure'
-import { FarvaterFigure } from './lib/figures/FarvaterFigure'
+import { Stage, StageEvent } from "./lib/src/Stage"
+import type { IFigure } from './lib/src/figures/Figure'
+import { FarvaterFigure } from './lib/src/figures/FarvaterFigure'
 
 let rootEl = ref(null)
 let stage: Stage
@@ -13,7 +13,7 @@ onMounted(() => {
 })
 
 function init () {
-  stage = new Stage({root: rootEl.value})
+  stage = new Stage({root: rootEl.value as HTMLElement})
   stage.on(StageEvent.FIGURE_SELECTED, (_figure) => {
     selected.value = _figure
   })

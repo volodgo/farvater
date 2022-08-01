@@ -20,19 +20,32 @@ export class Stage extends EventEmitter {
   movePoint: Point = {x: 0, y: 0}
   figures: IFigure[] = []
   selected: IFigure
+  windowWidth: number = NaN
 
   constructor (o: StageOptions) {
     super()
     Object.assign(this, o)
     let canv = document.createElement('canvas')
-    canv.width = this.root.clientWidth
-    canv.height = this.root.clientHeight
     this.canv = canv
+    this.updateCanvasSize()
     this.root.append(canv)
     this.cx = canv.getContext('2d')
     canv.addEventListener('mousedown', this.onMouseDown.bind(this))
     canv.addEventListener('mouseup', this.onMouseUp.bind(this))
     canv.addEventListener('mousemove', this.onMouseMove.bind(this))
+    window.addEventListener('resize', this.onResize.bind(this))
+  }
+
+  updateCanvasSize () {
+    this.canv.width = this.root.clientWidth
+    this.canv.height = this.root.clientHeight
+  }
+
+  onResize (e: Event) {
+    setTimeout(() => {
+      this.updateCanvasSize()
+      this.update()
+    })
   }
 
   findFugureByCords (x: number, y: number): IFigure {
